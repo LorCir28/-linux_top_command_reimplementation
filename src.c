@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <dirent.h>
 #include <fcntl.h>
+#include <string.h>
 
 
 int main(int argc, char** argv) {
@@ -17,23 +18,30 @@ int main(int argc, char** argv) {
 	struct dirent* pdirent = readdir(pdir);
 	
 	while (pdirent != NULL) {
-		char* pid = pdirent->d_name;
-		printf("%s\t", pid);
+	//	char* pid = pdirent->d_name;
+		char pid[] = "1";
+	//	printf("%s\n", pid);
 
 		// Angelo
-		FILE* fd=fopen("/proc/"+pid+"/stat","r");
+		char path[] = "/proc/";
+		strcat(path, pid);
+	//	printf("%s", path);
+		strcat(path, "/stat");
+		printf("%s\n", path);
+		FILE* fd=fopen(path,"r");
 		int unused;
 		char* command = (char*)malloc(sizeof(char));
 		char state;
 		int ppid;
 		fscanf(fd, "%d %s %c %d", &unused, command, &state, &ppid);
 		
-		printf("%c", state);
-		printf("%d", ppid);
-		printf("%s", command);
+		printf("%c\n", state);
+		printf("%d\n", ppid);
+		printf("%s\n", command);
 		//fine Angelo
 		
 		pdirent = readdir(pdir);
+	
 	}
 	//fine Lorenzo
 	
