@@ -16,29 +16,32 @@ int main(int argc, char** argv) {
 	}
 	
 	struct dirent* pdirent = readdir(pdir);
+	printf("PID\tSTATE\tPPID\tCOMMAND\n");
 	
 	while (pdirent != NULL) {
-	//	char* pid = pdirent->d_name;
-		char pid[] = "1";
-	//	printf("%s\n", pid);
 
-		// Angelo
-		char path[] = "/proc/";
-		strcat(path, pid);
-	//	printf("%s", path);
-		strcat(path, "/stat");
-		printf("%s\n", path);
-		FILE* fd=fopen(path,"r");
-		int unused;
-		char* command = (char*)malloc(sizeof(char));
-		char state;
-		int ppid;
-		fscanf(fd, "%d %s %c %d", &unused, command, &state, &ppid);
-		
-		printf("%c\n", state);
-		printf("%d\n", ppid);
-		printf("%s\n", command);
-		//fine Angelo
+		char* pid = pdirent->d_name;
+		printf("%s\t", pid);
+
+		if(atoi(pdirent->d_name)!=0){
+
+			// Angelo
+			char path[] = "/proc/";
+			strcat(path, pid);
+			strcat(path, "/stat");
+			printf("%s\n", path);
+			FILE* fd=fopen(path,"r");
+			int unused;
+			char command[1000];
+			char state;
+			int ppid;
+			fscanf(fd, "%d %s %c %d", &unused, command, &state, &ppid);
+			
+			printf("%c\t", state);
+			printf("%d\t", ppid);
+			printf("%s\n", command);
+			//fine Angelo
+		}
 		
 		pdirent = readdir(pdir);
 	
