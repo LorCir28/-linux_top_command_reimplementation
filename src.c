@@ -3,6 +3,7 @@
 #include <dirent.h>
 #include <fcntl.h>
 #include <string.h>
+#include <signal.h>
 
 
 int main(int argc, char** argv) {
@@ -48,7 +49,24 @@ int main(int argc, char** argv) {
 	}
 	//fine Lorenzo
 	
+	// Lorenzo
 	closedir(pdir);
+	
+	char signal_inserted;
+	
+	printf("inserire l'azione sul processo:\n");
+	printf("-t per terminare\n");
+	scanf("%c", &signal_inserted);
+	
+	int pid_signal;
+	
+	printf("inserire pid del processo: ");
+	scanf("%d", &pid_signal);
+	
+	if (signal_inserted == 't') {
+		kill(pid_signal, 9);
+		printf("processo terminato");
+	}
 	
 	printf("\n");
 	
