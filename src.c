@@ -28,18 +28,19 @@ int main(int argc, char** argv) {
 			char path[] = "/proc/";
 			strcat(path, pid);
 			strcat(path, "/stat");
+
 			FILE* fd=fopen(path,"r");
 			int unused;
 			char command[1000];
 			char state;
 			int ppid;
 			fscanf(fd, "%d %s %c %d", &unused, command, &state, &ppid);
-		
+			
 			printf("%c\t", state);
 			printf("%d\t", ppid);
 			printf("%s\n", command);
 			//fine Angelo
-			
+
 		}
 		
 			pdirent = readdir(pdir);
