@@ -59,6 +59,7 @@ int main(int argc, char** argv) {
 	printf("inserire l'azione sul processo:\n");
 	printf("-t per terminare\n");
 	printf("-s per sospendere\n");
+	printf("-r per riesumare\n");
 	scanf("%c", &signal_inserted);
 	
 	int pid_signal;
@@ -76,7 +77,45 @@ int main(int argc, char** argv) {
 		kill(pid_signal, SIGSTOP);
 		printf("processo sospeso\n");
 	}
-	
+	else if(signal_inserted == 'r')	{
+		kill(pid_signal, SIGCONT);
+		printf("processo riesumato\n");
+	}
 	return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	
