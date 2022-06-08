@@ -52,14 +52,15 @@ int main(int argc, char** argv) {
 	// Lorenzo
 	closedir(pdir);
 	
-	//manage signals
+	// manage signals
 	
 	char signal_inserted;
 	
 	printf("inserire l'azione sul processo:\n");
-	printf("-t per terminare\n");
+	printf("-k per killare\n");
 	printf("-s per sospendere\n");
 	printf("-r per riesumare\n");
+	printf("-t per terminare\n");
 	scanf("%c", &signal_inserted);
 	
 	int pid_signal;
@@ -67,12 +68,12 @@ int main(int argc, char** argv) {
 	printf("inserire pid del processo: ");
 	scanf("%d", &pid_signal);
 	
-	if (signal_inserted == 't') {
+	if (signal_inserted == 'k') {
 		kill(pid_signal, SIGKILL);
-		printf("processo terminato\n");
+		printf("processo killato\n");
 	}
 	
-	//Angelo
+	// Angelo
 	else if(signal_inserted == 's')	{
 		kill(pid_signal, SIGSTOP);
 		printf("processo sospeso\n");
@@ -81,6 +82,13 @@ int main(int argc, char** argv) {
 		kill(pid_signal, SIGCONT);
 		printf("processo riesumato\n");
 	}
+	// Lorenzo
+	else if(signal_inserted == 't')	{
+		kill(pid_signal, SIGTERM);
+		printf("processo terminato\n");
+	}
+	
+	
 	return 0;
 }
 
