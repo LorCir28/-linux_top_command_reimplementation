@@ -89,9 +89,9 @@ int main(int argc, char** argv) {
 	//	int int_pid_signal = atoi(pid_signal);
 	//	printf("%d", int_pid_signal);
 	
-		if (strcmp(pid_signal, "q") == 0) {
-			break;
-		}
+	//	if (strcmp(pid_signal, "q") == 0) {
+	//		break;
+	//	}
 	//	if (atoi(pid_signal) == 0) {
 	//		printf("HAI INSERITO UNA FRASE");
 	//	}
@@ -142,22 +142,22 @@ int main(int argc, char** argv) {
 	//	}
 	
 	
-		if (strcmp(signal_inserted, "k") == 0) {
+		if (strcmp(signal_inserted, "k") == 0 && strcmp(pid_signal, "q") != 0) {
 			kill(int_pid_signal, SIGKILL);
 			printf("processo killato\n");
 		}
 		
 		// Angelo
-		else if(strcmp(signal_inserted, "s") == 0)	{
+		else if(strcmp(signal_inserted, "s") == 0 && strcmp(pid_signal, "q") != 0)	{
 			kill(int_pid_signal, SIGSTOP);
 			printf("processo sospeso\n");
 		}
-		else if(strcmp(signal_inserted, "r") == 0)	{
+		else if(strcmp(signal_inserted, "r") == 0 && strcmp(pid_signal, "q") != 0)	{
 			kill(int_pid_signal, SIGCONT);
 			printf("processo riesumato\n");
 		}
 		// Lorenzo
-		else if(strcmp(signal_inserted, "t") == 0)	{
+		else if(strcmp(signal_inserted, "t") == 0 && strcmp(pid_signal, "q") != 0)	{
 			kill(int_pid_signal, SIGTERM);
 			printf("processo terminato\n");
 		}
