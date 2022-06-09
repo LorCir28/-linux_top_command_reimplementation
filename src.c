@@ -54,36 +54,49 @@ int main(int argc, char** argv) {
 	
 	// manage signals
 	
-	char signal_inserted;
+	char* signal_inserted = (char*)malloc(sizeof(char));
 	
 	printf("inserire l'azione sul processo:\n");
 	printf("-k per killare\n");
 	printf("-s per sospendere\n");
 	printf("-r per riesumare\n");
 	printf("-t per terminare\n");
-	scanf("%c", &signal_inserted);
-	
+	scanf("%s", signal_inserted);
+
+	//Angelo
+	while(strcmp(signal_inserted, "k") != 0 && strcmp(signal_inserted, "s") != 0 && strcmp(signal_inserted, "r") != 0 && strcmp(signal_inserted, "t") != 0){
+		printf("Azione inserita non valida\n");
+		printf("Inserire l'azione sul processo:\n");
+		printf("-k per killare\n");
+		printf("-s per sospendere\n");
+		printf("-r per riesumare\n");
+		printf("-t per terminare\n");
+		scanf("%s", signal_inserted);
+
+	}
+
+	//Lorenzo
 	int pid_signal;
 	
 	printf("inserire pid del processo: ");
 	scanf("%d", &pid_signal);
 	
-	if (signal_inserted == 'k') {
+	if (strcmp(signal_inserted, "k") == 0) {
 		kill(pid_signal, SIGKILL);
 		printf("processo killato\n");
 	}
 	
 	// Angelo
-	else if(signal_inserted == 's')	{
+	else if(strcmp(signal_inserted, "s") == 0)	{
 		kill(pid_signal, SIGSTOP);
 		printf("processo sospeso\n");
 	}
-	else if(signal_inserted == 'r')	{
+	else if(strcmp(signal_inserted, "r") == 0)	{
 		kill(pid_signal, SIGCONT);
 		printf("processo riesumato\n");
 	}
 	// Lorenzo
-	else if(signal_inserted == 't')	{
+	else if(strcmp(signal_inserted, "t") == 0)	{
 		kill(pid_signal, SIGTERM);
 		printf("processo terminato\n");
 	}
