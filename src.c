@@ -32,6 +32,7 @@ int main(int argc, char** argv) {
 
 			FILE* fd=fopen(path,"r");
 			int unused;
+		//	char* command = (char*)malloc(sizeof(char));
 			char command[1000];
 			char state;
 			int ppid;
