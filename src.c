@@ -80,35 +80,25 @@ int main(int argc, char** argv) {
 	
 	printf("inserire pid del processo: ");
 	scanf("%d", &pid_signal);
-	
-	printf("CIAOOOOO\n");
-	
+		
 	DIR* control_pdir = opendir("/proc");
 	if (control_pdir == NULL) {
 		printf("error\n");
 		exit(EXIT_FAILURE);
 	}
-	
-	printf("PROC APERTA\n");
-	
-	struct dirent* control_pdirent = readdir(control_pdir);
-	
-	printf("DIRECTORY: %s\n", control_pdirent->d_name);
-	
+		
+	struct dirent* control_pdirent = readdir(control_pdir);	
 	
 	while (control_pdirent != NULL) {
 		int control_pid = atoi(control_pdirent->d_name);
-		printf("DIRECTORY CORRENTE: %s\n", control_pdirent->d_name);
 		if (pid_signal == control_pid) {
 			break;
 		}
 		control_pdirent = readdir(control_pdir);
-		if (control_pdirent != NULL) printf("DIRECTORY SUCCESSIVA %s\n", control_pdirent->d_name);
 		if (control_pdirent == NULL) {
 			printf("pid inserito non valido\n");
 			printf("inserire pid del processo: ");
-			scanf("%d", &pid_signal);
-			
+			scanf("%d", &pid_signal);	
 			
 			control_pdir = opendir("/proc");
 			control_pdirent = readdir(control_pdir);
