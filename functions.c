@@ -70,10 +70,14 @@ void print_process_informations(DIR* pdir, struct dirent* pdirent) {
 			char command[1000];
 			char state;
 			int ppid;
-			fscanf(fd, "%d %s %c %d", &unused, command, &state, &ppid);
+			int pgrp;
+			int session_id;
+			fscanf(fd, "%d %s %c %d %d %d", &unused, command, &state, &ppid, &pgrp, &session_id);
 				
 			printf("%c\t", state);
 			printf("%d\t", ppid);
+			printf("%d\t\t", pgrp);
+			printf("%d\t\t", session_id);
 			printf("%s\n", command);
 			
 			int clf = fclose(fd);
