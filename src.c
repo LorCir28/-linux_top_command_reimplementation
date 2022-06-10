@@ -10,13 +10,15 @@
 // Angelo
 void check_opendir(DIR* pdir);
 void check_closedir(int cld);
+void check_openfile(FILE* fd);
+void check_closefile(int clf);
 
 
 int main(int argc, char** argv) {
 
 	// Lorenzo
 	DIR* pdir = opendir("/proc");
-	check_opendirProc(pdir);
+	check_opendir(pdir);
 /*	
 	if (pdir == NULL) {
 		printf("errore apertura directory proc\n");
@@ -38,10 +40,12 @@ int main(int argc, char** argv) {
 			strcat(path, "/stat");
 
 			FILE* fd=fopen(path,"r");
-			if (fd == NULL) {
+			check_openfile(fd);
+		/*	if (fd == NULL) {
 				printf("errore apertura file stat\n");
 				exit(EXIT_FAILURE);
 			}
+		*/
 			int unused;
 		//	char* command = (char*)malloc(sizeof(char));
 			char command[1000];
@@ -52,6 +56,9 @@ int main(int argc, char** argv) {
 			printf("%c\t", state);
 			printf("%d\t", ppid);
 			printf("%s\n", command);
+			
+			int clf = fclose(fd);
+			check_closefile(clf);
 			//fine Angelo
 
 		}
@@ -114,11 +121,12 @@ int main(int argc, char** argv) {
 		
 		// Lorenzo	
 		DIR* control_pdir = opendir("/proc");
-		if (control_pdir == NULL) {
+		check_opendir(control_pdir);
+	/*	if (control_pdir == NULL) {
 			printf("errore apertura directory proc\n");
 			exit(EXIT_FAILURE);
 		}
-			
+	*/		
 		struct dirent* control_pdirent = readdir(control_pdir);
 		
 		int int_pid_signal = atoi(pid_signal);
@@ -140,16 +148,20 @@ int main(int argc, char** argv) {
 				strcat(pattern, "/stat");
 
 				FILE* fdd=fopen(pattern,"r");
-				if (fdd == NULL) {
+				check_openfile(fdd);
+			/*	if (fdd == NULL) {
 					printf("errore aperture file stat\n");
 					exit(EXIT_FAILURE);
 				}
+			*/
 				int unused_variable;
 			//	char* command = (char*)malloc(sizeof(char));
 				char unused_command[1000];
 			//	char state;
 				int unused_ppid;
 				fscanf(fdd, "%d %s %c %d", &unused_variable, unused_command, &current_state, &unused_ppid);
+				int clff = fclose(fdd);
+				check_closefile(clff);
 				////////////////////////////////////
 				break;
 			}
@@ -172,10 +184,12 @@ int main(int argc, char** argv) {
 		}
 		
 		int cldd = closedir(control_pdir);
-		if (cldd == -1) {
+		check_closedir(cldd);
+	/*	if (cldd == -1) {
 			printf("errore chiusura directory proc\n");
 			exit(EXIT_FAILURE);
 		}
+	*/
 	
 	//	if (strcmp(pid_signal, "q") == 0) {
 	//		break;
@@ -233,7 +247,22 @@ void check_opendir(DIR* pdir) {
 
 void check_closedir(int cld) {
 	if (cld == -1) {
-		printf("errore chiusura directory /proc");
+		printf("errore chiusura directory /proc\n");
+		exit(EXIT_FAILURE);
+	}
+}
+
+// Lorenzo
+void check_openfile(FILE* fd) {
+	if (fd == NULL) {
+		printf("errore aperture file stat\n");
+		exit(EXIT_FAILURE);
+	}
+}
+
+void check_closefile(int clf) {
+	if (clf == EOF) {
+		printf("errore chiusura file\n");
 		exit(EXIT_FAILURE);
 	}
 }
