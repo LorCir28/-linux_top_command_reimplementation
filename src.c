@@ -171,11 +171,16 @@ int main(int argc, char** argv) {
 				printf("processo già sospeso\n");
 			}
 		}
-		else if(strcmp(signal_inserted, "r") == 0 && strcmp(pid_signal, "q") != 0)	{
-			kill(int_pid_signal, SIGCONT);
-			printf("processo riesumato\n");
-		}
 		// Lorenzo
+		else if(strcmp(signal_inserted, "r") == 0 && strcmp(pid_signal, "q") != 0)	{
+			if (current_state == 'T') {
+				kill(int_pid_signal, SIGCONT);
+				printf("processo riesumato\n");
+			}
+			else {
+				printf("tentata resume di un processo non sospeso\n");
+			}
+		}
 		else if(strcmp(signal_inserted, "t") == 0 && strcmp(pid_signal, "q") != 0)	{
 			kill(int_pid_signal, SIGTERM);
 			printf("processo terminato\n");
