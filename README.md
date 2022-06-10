@@ -1,3 +1,7 @@
+# per compilare: 'make'
+# per pulire la directory e poter ricompilare: 'make clean'
+
+
 # so_project
 
 
