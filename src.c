@@ -5,6 +5,8 @@
 #include <string.h>
 #include <signal.h>
 
+// prototipo funzioni
+
 
 int main(int argc, char** argv) {
 
@@ -12,7 +14,7 @@ int main(int argc, char** argv) {
 	DIR* pdir = opendir("/proc");
 	
 	if (pdir == NULL) {
-		printf("error\n");
+		printf("errore apertura directory proc\n");
 		exit(EXIT_FAILURE);
 	}
 	
@@ -31,6 +33,10 @@ int main(int argc, char** argv) {
 			strcat(path, "/stat");
 
 			FILE* fd=fopen(path,"r");
+			if (fd == NULL) {
+				printf("errore apertura file stat\n");
+				exit(EXIT_FAILURE);
+			}
 			int unused;
 		//	char* command = (char*)malloc(sizeof(char));
 			char command[1000];
@@ -51,7 +57,11 @@ int main(int argc, char** argv) {
 	//fine Lorenzo
 		
 	// Lorenzo
-	closedir(pdir);
+	int cld = closedir(pdir);
+	if (cld == -1) {
+		printf("errore chiusura directory proc\n");
+		exit(EXIT_FAILURE);
+	}
 		
 	// manage signals
 	char* signal_inserted = (char*)malloc(sizeof(char));
@@ -99,7 +109,7 @@ int main(int argc, char** argv) {
 		// Lorenzo	
 		DIR* control_pdir = opendir("/proc");
 		if (control_pdir == NULL) {
-			printf("error\n");
+			printf("errore apertura directory proc\n");
 			exit(EXIT_FAILURE);
 		}
 			
@@ -124,6 +134,10 @@ int main(int argc, char** argv) {
 				strcat(pattern, "/stat");
 
 				FILE* fdd=fopen(pattern,"r");
+				if (fdd == NULL) {
+					printf("errore aperture file stat\n");
+					exit(EXIT_FAILURE);
+				}
 				int unused_variable;
 			//	char* command = (char*)malloc(sizeof(char));
 				char unused_command[1000];
@@ -149,6 +163,12 @@ int main(int argc, char** argv) {
 				control_pdirent = readdir(control_pdir);
 			}
 	
+		}
+		
+		int cldd = closedir(control_pdir);
+		if (cldd == -1) {
+			printf("errore chiusura directory proc\n");
+			exit(EXIT_FAILURE);
 		}
 	
 	//	if (strcmp(pid_signal, "q") == 0) {
