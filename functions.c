@@ -67,7 +67,6 @@ void print_process_informations(DIR* pdir, struct dirent* pdirent) {
 			check_openfile(fd);
 
 			int unused;
-		//	char* command = (char*)malloc(sizeof(char));
 			char command[1000];
 			char state;
 			int ppid;
