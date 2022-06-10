@@ -107,6 +107,7 @@ int main(int argc, char** argv) {
 		
 		int int_pid_signal = atoi(pid_signal);
 	//	printf("%d\n", int_pid_signal);
+		char current_state;
 		
 		while (control_pdirent != NULL) {
 			int control_pid = atoi(control_pdirent->d_name);
@@ -117,6 +118,19 @@ int main(int argc, char** argv) {
 	
 	
 			if (int_pid_signal == control_pid && control_pid != 0) {
+				//////////////////////////////////
+				char pattern[] = "/proc/";
+				strcat(pattern, pid_signal);
+				strcat(pattern, "/stat");
+
+				FILE* fdd=fopen(pattern,"r");
+				int unused_variable;
+			//	char* command = (char*)malloc(sizeof(char));
+				char unused_command[1000];
+			//	char state;
+				int unused_ppid;
+				fscanf(fdd, "%d %s %c %d", &unused_variable, unused_command, &current_state, &unused_ppid);
+				////////////////////////////////////
 				break;
 			}
 		
@@ -149,8 +163,13 @@ int main(int argc, char** argv) {
 		
 		// Angelo
 		else if(strcmp(signal_inserted, "s") == 0 && strcmp(pid_signal, "q") != 0)	{
-			kill(int_pid_signal, SIGSTOP);
-			printf("processo sospeso\n");
+			if (current_state != 'T') {
+				kill(int_pid_signal, SIGSTOP);
+				printf("processo sospeso\n");
+			}
+			else {
+				printf("processo già sospeso\n");
+			}
 		}
 		else if(strcmp(signal_inserted, "r") == 0 && strcmp(pid_signal, "q") != 0)	{
 			kill(int_pid_signal, SIGCONT);
