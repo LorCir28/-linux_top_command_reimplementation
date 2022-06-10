@@ -5,17 +5,24 @@
 #include <string.h>
 #include <signal.h>
 
+// prototipo funzioni
+
+// Angelo
+void check_opendir(DIR* pdir);
+void check_closedir(int cld);
+
 
 int main(int argc, char** argv) {
 
 	// Lorenzo
 	DIR* pdir = opendir("/proc");
-	
+	check_opendirProc(pdir);
+/*	
 	if (pdir == NULL) {
-		printf("error\n");
+		printf("errore apertura directory proc\n");
 		exit(EXIT_FAILURE);
 	}
-	
+*/	
 	struct dirent* pdirent = readdir(pdir);
 	
 	printf("PID\tSTATE\tPPID\tCOMMAND\n");
@@ -31,6 +38,10 @@ int main(int argc, char** argv) {
 			strcat(path, "/stat");
 
 			FILE* fd=fopen(path,"r");
+			if (fd == NULL) {
+				printf("errore apertura file stat\n");
+				exit(EXIT_FAILURE);
+			}
 			int unused;
 		//	char* command = (char*)malloc(sizeof(char));
 			char command[1000];
@@ -51,8 +62,13 @@ int main(int argc, char** argv) {
 	//fine Lorenzo
 		
 	// Lorenzo
-	closedir(pdir);
-		
+	int cld = closedir(pdir);
+	check_closedir(cld);
+/*	if (cld == -1) {
+		printf("errore chiusura directory proc\n");
+		exit(EXIT_FAILURE);
+	}
+*/		
 	// manage signals
 	char* signal_inserted = (char*)malloc(sizeof(char));
 	char* pid_signal = (char*)malloc(sizeof(char));
@@ -99,7 +115,7 @@ int main(int argc, char** argv) {
 		// Lorenzo	
 		DIR* control_pdir = opendir("/proc");
 		if (control_pdir == NULL) {
-			printf("error\n");
+			printf("errore apertura directory proc\n");
 			exit(EXIT_FAILURE);
 		}
 			
@@ -124,6 +140,10 @@ int main(int argc, char** argv) {
 				strcat(pattern, "/stat");
 
 				FILE* fdd=fopen(pattern,"r");
+				if (fdd == NULL) {
+					printf("errore aperture file stat\n");
+					exit(EXIT_FAILURE);
+				}
 				int unused_variable;
 			//	char* command = (char*)malloc(sizeof(char));
 				char unused_command[1000];
@@ -150,6 +170,12 @@ int main(int argc, char** argv) {
 			}
 	
 		}
+		
+		int cldd = closedir(control_pdir);
+		if (cldd == -1) {
+			printf("errore chiusura directory proc\n");
+			exit(EXIT_FAILURE);
+		}
 	
 	//	if (strcmp(pid_signal, "q") == 0) {
 	//		break;
@@ -171,11 +197,16 @@ int main(int argc, char** argv) {
 				printf("processo già sospeso\n");
 			}
 		}
-		else if(strcmp(signal_inserted, "r") == 0 && strcmp(pid_signal, "q") != 0)	{
-			kill(int_pid_signal, SIGCONT);
-			printf("processo riesumato\n");
-		}
 		// Lorenzo
+		else if(strcmp(signal_inserted, "r") == 0 && strcmp(pid_signal, "q") != 0)	{
+			if (current_state == 'T') {
+				kill(int_pid_signal, SIGCONT);
+				printf("processo riesumato\n");
+			}
+			else {
+				printf("tentata resume di un processo non sospeso\n");
+			}
+		}
 		else if(strcmp(signal_inserted, "t") == 0 && strcmp(pid_signal, "q") != 0)	{
 			kill(int_pid_signal, SIGTERM);
 			printf("processo terminato\n");
@@ -185,4 +216,24 @@ int main(int argc, char** argv) {
 	
 	
 	return 0;
+}
+
+
+
+
+// funzioni
+
+// Angelo
+void check_opendir(DIR* pdir) {
+	if (pdir == NULL) {
+		printf("errore apertura directory /proc");
+		exit(EXIT_FAILURE);
+	}
+}
+
+void check_closedir(int cld) {
+	if (cld == -1) {
+		printf("errore chiusura directory /proc");
+		exit(EXIT_FAILURE);
+	}
 }
