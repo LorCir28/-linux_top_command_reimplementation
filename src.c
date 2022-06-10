@@ -12,6 +12,7 @@ void check_opendir(DIR* pdir);
 void check_closedir(int cld);
 void check_openfile(FILE* fd);
 void check_closefile(int clf);
+void check_action_inserted(char* signal_inserted);
 
 
 int main(int argc, char** argv) {
@@ -91,7 +92,8 @@ int main(int argc, char** argv) {
 		scanf("%s", signal_inserted);
 
 		// Angelo
-		while(strcmp(signal_inserted, "k") != 0 && strcmp(signal_inserted, "s") != 0 && strcmp(signal_inserted, "r") && strcmp(signal_inserted, "t") != 0 && strcmp(signal_inserted, "q") != 0){
+		check_action_inserted(signal_inserted);
+	/*	while(strcmp(signal_inserted, "k") != 0 && strcmp(signal_inserted, "s") != 0 && strcmp(signal_inserted, "r") && strcmp(signal_inserted, "t") != 0 && strcmp(signal_inserted, "q") != 0){
 			printf("Azione inserita non valida\n");
 			printf("Inserire l'azione sul processo:\n");
 			printf("-k per killare\n");
@@ -101,7 +103,7 @@ int main(int argc, char** argv) {
 			printf("-q to quit\n");
 			scanf("%s", signal_inserted);
 		}
-		
+	*/
 		if (strcmp(signal_inserted, "q") == 0) {
 			break;
 		}
@@ -264,5 +266,19 @@ void check_closefile(int clf) {
 	if (clf == EOF) {
 		printf("errore chiusura file\n");
 		exit(EXIT_FAILURE);
+	}
+}
+
+// Angelo
+void check_action_inserted(char* signal_inserted) {
+	while(strcmp(signal_inserted, "k") != 0 && strcmp(signal_inserted, "s") != 0 && strcmp(signal_inserted, "r") && strcmp(signal_inserted, "t") != 0 && strcmp(signal_inserted, "q") != 0){
+		printf("Azione inserita non valida\n");
+		printf("Inserire l'azione sul processo:\n");
+		printf("-k per killare\n");
+		printf("-s per sospendere\n");
+		printf("-r per riesumare\n");
+		printf("-t per terminare\n");
+		printf("-q to quit\n");
+		scanf("%s", signal_inserted);
 	}
 }
