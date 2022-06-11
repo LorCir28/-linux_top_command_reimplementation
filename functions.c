@@ -23,10 +23,9 @@ void check_closedir(int cld) {
 	}
 }
 
-// Lorenzo
 void check_openfile(FILE* fd) {
 	if (fd == NULL) {
-		printf("errore aperture file stat\n");
+		printf("errore apertura file stat\n");
 		exit(EXIT_FAILURE);
 	}
 }
@@ -38,7 +37,6 @@ void check_closefile(int clf) {
 	}
 }
 
-// Angelo
 void check_action_inserted(char* signal_inserted) {
 	while(strcmp(signal_inserted, "k") != 0 && strcmp(signal_inserted, "s") != 0 && strcmp(signal_inserted, "r") && strcmp(signal_inserted, "t") != 0 && strcmp(signal_inserted, "q") != 0){
 		printf("Azione inserita non valida\n");
@@ -59,15 +57,18 @@ void print_process_informations(DIR* pdir, struct dirent* pdirent) {
 			char* pid = pdirent->d_name;
 			printf("%s\t", pid);
 
-			char path[] = "/proc/";
+		//	char path[] = "/proc/";
+			char* path = (char*)malloc(20*sizeof(char));
+			strcpy(path, "/proc/");
 			strcat(path, pid);
 			strcat(path, "/stat");
-
+			
 			FILE* fd=fopen(path,"r");
 			check_openfile(fd);
 
 			int unused;
-			char command[1000];
+			char* command = (char*)malloc(100*sizeof(char));
+		//	char command[1000];
 			char state;
 			int ppid;
 			int pgrp;
@@ -82,7 +83,10 @@ void print_process_informations(DIR* pdir, struct dirent* pdirent) {
 			
 			int clf = fclose(fd);
 			check_closefile(clf);
-
+			
+			free(path);
+			free(command);
+									
 		}
 		
 		pdirent = readdir(pdir);
