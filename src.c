@@ -18,7 +18,7 @@ int main(int argc, char** argv) {
 	// puntatore a struct dirent per ciclare sul contenuto di /proc
 	struct dirent* pdirent = readdir(pdir);
 	
-	printf("PID\tSTATE\tPPID\tGROUP_ID\tSESSION_ID\tCOMMAND\n");
+	printf("PID\tSTATE\tPPID\tGROUP_ID\tSESSION_ID\tPRIORITY\tCPU_USAGE\tCOMMAND\n");
 	
 	print_process_informations(pdir, pdirent);
 		
@@ -30,8 +30,6 @@ int main(int argc, char** argv) {
 	
 	char* signal_inserted = (char*)malloc(100*sizeof(char));
 	char* pid_signal = (char*)malloc(100*sizeof(char));
-//	char signal_inserted[1000];
-//	char pid_signal[1000]; 
 	
 	// ciclo per evitare la terminazione del programma
 	while (1) {
@@ -75,7 +73,6 @@ int main(int argc, char** argv) {
 			// caso in cui il pid inserito è presente in /proc
 			if (int_pid_signal == control_pid && control_pid != 0) {
 				// salvataggio dello stato corrente per i controlli successivi su suspend e resume
-			//	char pattern[] = "/proc/";
 				char* pattern = (char*)malloc(20*sizeof(char));
 				strcpy(pattern, "/proc/");
 				strcat(pattern, pid_signal);
@@ -86,7 +83,6 @@ int main(int argc, char** argv) {
 
 				int unused_variable;
 				char* unused_command = (char*)malloc(100*sizeof(char));
-			//	char unused_command[1000];
 				int unused_ppid;
 				fscanf(fdd, "%d %s %c %d", &unused_variable, unused_command, &current_state, &unused_ppid);
 				int clff = fclose(fdd);
