@@ -84,11 +84,15 @@ void print_process_informations(DIR* pdir, struct dirent* pdirent) {
 			int ppid;
 			int pgrp;
 			int session_id;
-			fscanf(fd, "%d %s %c %d %d %d", &unused, command, &state, &ppid, &pgrp, &session_id);
-						
 			char* priority = (char*)malloc(50*sizeof(char));
 			char* utime_string = (char*)malloc(50*sizeof(char));
-			for (int i = 0; i < 18; i++) {
+			fscanf(fd, "%d %s %c %d %d %d %d %d %d %d %d %d %d %s %d %d %d %s", &unused, command, &state, &ppid, &pgrp, &session_id,
+					&unused, &unused, &unused, &unused, &unused, &unused, &unused, utime_string,
+					&unused, &unused, &unused, priority);
+			
+		//	char* priority = (char*)malloc(50*sizeof(char));
+		//	char* utime_string = (char*)malloc(50*sizeof(char));
+		/*	for (int i = 0; i < 18; i++) {
 				if (i == 13) {
 					fgets(utime_string, 50, fd);
 				}
@@ -96,6 +100,8 @@ void print_process_informations(DIR* pdir, struct dirent* pdirent) {
 					fgets(priority, 3, fd);
 				}
 			}
+		
+		*/
 			float utime = atof(utime_string);
 			free(utime_string);
 			float cpu_usage = (utime / total_time)*100;		
@@ -105,7 +111,7 @@ void print_process_informations(DIR* pdir, struct dirent* pdirent) {
 			printf("%d\t\t", pgrp);
 			printf("%d\t\t", session_id);
 			printf("%s\t\t", priority);
-			printf("%2.1f%%\t\t", cpu_usage);
+			printf("%2.1f\t\t", cpu_usage);
 			printf("%s\n", command);
 					
 			
